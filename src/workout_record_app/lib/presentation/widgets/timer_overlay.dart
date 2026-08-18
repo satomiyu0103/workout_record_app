@@ -8,42 +8,22 @@ import 'package:workout_record_app/core/theme/app_colors.dart';
 /// `showDialog` / `AlertDialog` は実機で暗転のみになることがあるため、
 /// 透明な [PageRoute] で中央パネルを載せる。
 void showTimerOverlay(BuildContext context) {
-  Navigator.of(context).push<void>(_TimerOverlayRoute());
-}
-
-class _TimerOverlayRoute extends PageRoute<void> {
-  @override
-  bool get barrierDismissible => true;
-
-  @override
-  Color? get barrierColor => Colors.black54;
-
-  @override
-  bool get opaque => false;
-
-  @override
-  Duration get transitionDuration => const Duration(milliseconds: 200);
-
-  @override
-  Widget buildPage(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-  ) {
-    return _TimerOverlayPage(
-      onClose: () => navigator?.pop(),
-    );
-  }
-
-  @override
-  Widget buildTransitions(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-    Widget child,
-  ) {
-    return FadeTransition(opacity: animation, child: child);
-  }
+  Navigator.of(context).push<void>(
+    PageRouteBuilder<void>(
+      opaque: false,
+      barrierDismissible: true,
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return _TimerOverlayPage(
+          onClose: () => Navigator.of(context).pop(),
+        );
+      },
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(opacity: animation, child: child);
+      },
+    ),
+  );
 }
 
 class _TimerOverlayPage extends StatelessWidget {
