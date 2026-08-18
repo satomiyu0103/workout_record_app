@@ -20,6 +20,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   DateTime? _lastTapAt;
 
   void _handleDayTap(DateTime selectedDay, DateTime focusedDay) {
+    if (!_isDaySelectable(selectedDay)) {
+      return;
+    }
+
     final now = DateTime.now();
     if (_lastTapDay != null &&
         _lastTapAt != null &&
@@ -44,6 +48,16 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     });
   }
 
+  bool _isDaySelectable(DateTime day) {
+    final normalized = DateTime(day.year, day.month, day.day);
+    return !normalized.isAfter(todayDateOnly());
+  }
+
+  DateTime get _calendarLastDay {
+    final today = todayDateOnly();
+    return DateTime(today.year + 1, 12, 31);
+  }
+
   @override
   Widget build(BuildContext context) {
     final monthKey = (year: _focusedDay.year, month: _focusedDay.month);
@@ -58,8 +72,9 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           child: TableCalendar<void>(
             locale: 'ja_JP',
             firstDay: DateTime(2000),
-            lastDay: DateTime.now(),
+            lastDay: _calendarLastDay,
             focusedDay: _focusedDay,
+            enabledDayPredicate: _isDaySelectable,
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
             calendarFormat: CalendarFormat.month,
             startingDayOfWeek: StartingDayOfWeek.monday,

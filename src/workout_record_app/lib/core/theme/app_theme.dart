@@ -33,6 +33,23 @@ ThemeData buildAppTheme() {
       unselectedItemColor: AppColors.textSecondary,
       type: BottomNavigationBarType.fixed,
     ),
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: AppColors.backgroundSecondary,
+      indicatorColor: AppColors.accentPrimary.withValues(alpha: 0.2),
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        final selected = states.contains(WidgetState.selected);
+        return TextStyle(
+          fontSize: 12,
+          color: selected ? AppColors.accentPrimary : AppColors.textSecondary,
+        );
+      }),
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        final selected = states.contains(WidgetState.selected);
+        return IconThemeData(
+          color: selected ? AppColors.accentPrimary : AppColors.textSecondary,
+        );
+      }),
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.accentPrimary,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:workout_record_app/presentation/screens/health_record_screen.dart';
 import 'package:workout_record_app/presentation/screens/history_list_screen.dart';
 
 /// 設定画面（FR-HIS-001 導線・プライバシーポリシー・アプリ情報）。
@@ -19,19 +18,6 @@ class SettingsScreen extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute<void>(
                 builder: (context) => const HistoryListScreen(),
-              ),
-            );
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.monitor_heart_outlined),
-          title: const Text('体組成・健康記録'),
-          subtitle: const Text('身長・体重・血圧'),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (context) => const HealthRecordScreen(),
               ),
             );
           },
