@@ -11,6 +11,7 @@
 ## [Unreleased]
 
 ### Added
+- `chore` Cursor Git ブランチガード — `git_branch_guard` 常時ルール、`preToolUse` / `beforeShellExecution` / stop フック改修。手順: `doc/reference/setup/cursor-git-branch-guard.md`
 - `feat` `FR-REC-004` 体組成・健康記録 — 身長・体重・血圧の日次保存（`daily_profiles` DB v2）。設定→体組成・健康記録画面
 - `feat` `FR-REC-002` 前回記録表示 — 入力画面「当日のセット」下に前回トレ日のセット一覧
 - `feat` `FR-HIS-001` 履歴の時刻表示 — `created_at` を日付＋時刻（yyyy/MM/dd HH:mm）で表示。当日セットにも時刻
