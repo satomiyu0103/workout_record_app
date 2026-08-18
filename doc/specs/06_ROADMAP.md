@@ -11,8 +11,8 @@
 ## 現在地
 
 - 企画書を `doc/specs/` に展開済み（要件・設計・検証設計）
-- `src/workout_record_app/` は未初期化（Flutter プロジェクト未作成）
-- 次のマイルストーン: **Phase 1（MVP）** の Flutter 初期化と記録 CRUD
+- `src/workout_record_app/` Flutter MVP 実装済み（実機 APK・NFR-PERF は利用者環境で確認）
+- 次のマイルストーン: **Phase 2** の 1RM 算出、実機配布確認（08b AC-DPL/OPS）
 
 ---
 
@@ -20,15 +20,15 @@
 
 | # | 内容 | 関連 FR / NFR | ステータス |
 |---|---|---|---|
-| 1-1 | Flutter プロジェクト初期化（`src/workout_record_app/`） | — | 未着手 |
-| 1-2 | SQLite スキーマ（menu_master, training_logs）・マイグレーション | FR-EXR, FR-REC | 未着手 |
-| 1-3 | 種目プリセット・カスタム登録 | FR-EXR-001, FR-EXR-002 | 未着手 |
-| 1-4 | トレ記録 CRUD（重量×回数） | FR-REC-001, FR-REC-002, FR-REC-003 | 未着手 |
-| 1-5 | 履歴一覧・カレンダー（RM 非表示） | FR-HIS-001, FR-HIS-002 | 未着手 |
-| 1-6 | インターバルタイマー（任意起動） | FR-SYS-002 | 未着手 |
-| 1-7 | ダークモード既定テーマ | FR-SYS-003, DESIGN.md | 未着手 |
-| 1-8 | NFR 検証（オフライン・起動時間） | NFR-SEC/OPS/PERF-001 | 未着手 |
-| 1-9 | Android release APK ビルド・実機インストール・個人運用確認 | [08b_検証設計_Android配布運用.md](08b_検証設計_Android配布運用.md) | 未着手 |
+| 1-1 | Flutter プロジェクト初期化（`src/workout_record_app/`） | — | 実装済 |
+| 1-2 | SQLite スキーマ（menu_master, training_logs）・マイグレーション | FR-EXR, FR-REC | 実装済 |
+| 1-3 | 種目プリセット・カスタム登録 | FR-EXR-001, FR-EXR-002 | 実装済 |
+| 1-4 | トレ記録 CRUD（重量×回数） | FR-REC-001, FR-REC-002, FR-REC-003 | 実装済 |
+| 1-5 | 履歴一覧・カレンダー（RM 非表示） | FR-HIS-001, FR-HIS-002 | 実装済 |
+| 1-6 | インターバルタイマー（任意起動） | FR-SYS-002 | 実装済 |
+| 1-7 | ダークモード既定テーマ | FR-SYS-003, DESIGN.md | 実装済 |
+| 1-8 | NFR 検証（オフライン・起動時間） | NFR-SEC/OPS/PERF-001 | 一部（単体テスト済・実機待ち） |
+| 1-9 | Android release APK ビルド・実機インストール・個人運用確認 | [08b_検証設計_Android配布運用.md](08b_検証設計_Android配布運用.md) | 未着手（Android SDK 要・手順は doc 参照） |
 
 **MVP 完了条件**: [08_検証設計.md](08_検証設計.md) の Must FR の AC がすべて満たされること。否定 AC（目標値・1RM 非表示）を含む。**実機での配布・運用**は [08b](08b_検証設計_Android配布運用.md) の AC-DPL / AC-OPS を満たすこと。手順は [flutter-android.md](../reference/setup/flutter-android.md)。
 

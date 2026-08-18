@@ -3,7 +3,7 @@
 筋トレの記録・進捗管理モバイルアプリ（オフライン完結）。
 
 - **企画書**: Google Drive `20260523_企画書_筋トレ記録アプリ`
-- **状態**: 要件・設計展開済み（`src/` は Phase 1 で Flutter 初期化予定）
+- **状態**: Phase 1 MVP 実装済み（`src/workout_record_app/`）。実機 APK は [flutter-android.md](doc/reference/setup/flutter-android.md) 参照
 - **テンプレ**: ai-agent-devenv-template v2026.5
 
 ## 目的

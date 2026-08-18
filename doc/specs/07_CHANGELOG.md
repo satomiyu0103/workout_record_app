@@ -10,6 +10,19 @@
 
 ## [Unreleased]
 
+### Added
+- `feat` `FR-REC-004` 体組成・健康記録 — 身長・体重・血圧の日次保存（`daily_profiles` DB v2）。設定→体組成・健康記録画面
+- `feat` `FR-REC-002` 前回記録表示 — 入力画面「当日のセット」下に前回トレ日のセット一覧
+- `feat` `FR-HIS-001` 履歴の時刻表示 — `created_at` を日付＋時刻（yyyy/MM/dd HH:mm）で表示。当日セットにも時刻
+- `test` 単体テスト 20 件 — 前回記録・体組成保存・時刻整形を追加
+
+### Fixed
+- `fix` `FR-SYS-002` タイマー起動クラッシュ — ボトムシートを Dialog 表示に変更し RenderBox.size 断言エラーを回避
+
+### Added（Phase 1 MVP 初回）
+- `feat` `FR-EXR-001` `FR-EXR-002` `FR-REC-001` `FR-REC-002` `FR-REC-003` `FR-HIS-001` `FR-HIS-002` `FR-SYS-002` `FR-SYS-003` Phase 1 MVP — `src/workout_record_app/` Flutter + SQLite + Riverpod。層分離・8種目シード・記録CRUD・履歴・カレンダー・タイマー・ダークUI
+- `test` MVP 単体テスト — バリデーション・DAO・タイマー状態・レポート Widget（16件）
+
 - `docs` `FR-REC-001` `FR-HIS-002` `FR-SYS-002` TEST-GAP 判断反映 — 複合バリデーション優先・カレンダー記録マーク・タイマー非停止・セッション内秒数・履歴日付降順（`02` `03` `08` `08c`）
 - `docs` MVP 実装ギャップ確定 — 設定タブ＋履歴導線、プリセット8種、ゴミ箱削除、Riverpod（ADR 0004）、重量小数2桁・未来日不可・タイマーバイブ（`02` `03` `08` `DESIGN.md`）
 - `docs` Android 配布・個人運用の検証設計分割 — `08b_検証設計_Android配布運用.md`（DT-DPL/OPS、ST-DPL/OPS）、`08_検証設計` AC-DPL/OPS 追記、`reference/setup/flutter-android.md`、ROADMAP 1-9
