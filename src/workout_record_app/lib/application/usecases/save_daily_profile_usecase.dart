@@ -41,14 +41,14 @@ class SaveDailyProfileUseCase {
     if (bloodPressureSystolic != null &&
         (bloodPressureSystolic < 50 || bloodPressureSystolic > 300)) {
       return const SaveDailyProfileResult(
-        error: '収縮期血圧は 50〜300 の範囲で入力してください',
+        error: '最高血圧は 50〜300 の範囲で入力してください',
       );
     }
 
     if (bloodPressureDiastolic != null &&
         (bloodPressureDiastolic < 30 || bloodPressureDiastolic > 200)) {
       return const SaveDailyProfileResult(
-        error: '拡張期血圧は 30〜200 の範囲で入力してください',
+        error: '最低血圧は 30〜200 の範囲で入力してください',
       );
     }
 

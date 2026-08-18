@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:workout_record_app/core/providers/app_providers.dart';
+import 'package:workout_record_app/core/router/app_shell.dart';
 import 'package:workout_record_app/presentation/screens/calendar_screen.dart';
+import 'package:workout_record_app/presentation/screens/health_record_screen.dart';
 import 'package:workout_record_app/presentation/screens/input_screen.dart';
 import 'package:workout_record_app/presentation/screens/report_screen.dart';
 import 'package:workout_record_app/presentation/screens/settings_screen.dart';
 import 'package:workout_record_app/presentation/widgets/timer_overlay.dart';
 
-/// 4 タブのメインシェル（底部ナビゲーション）。
+/// 5 タブのメインシェル（底部ナビゲーション）。
 class AppShell extends ConsumerWidget {
   const AppShell({super.key});
 
@@ -31,30 +33,40 @@ class AppShell extends ConsumerWidget {
         index: tabIndex,
         children: const [
           InputScreen(),
+          HealthRecordScreen(embedded: true),
           CalendarScreen(),
           ReportScreen(),
           SettingsScreen(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: tabIndex,
-        onTap: (index) =>
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: tabIndex,
+        onDestinationSelected: (index) =>
             ref.read(selectedTabIndexProvider.notifier).state = index,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.fitness_center_outlined),
+            selectedIcon: Icon(Icons.fitness_center),
             label: '入力',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month),
+          NavigationDestination(
+            icon: Icon(Icons.monitor_weight_outlined),
+            selectedIcon: Icon(Icons.monitor_weight),
+            label: '体組成',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.calendar_month_outlined),
+            selectedIcon: Icon(Icons.calendar_month),
             label: 'カレンダー',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart),
+          NavigationDestination(
+            icon: Icon(Icons.bar_chart_outlined),
+            selectedIcon: Icon(Icons.bar_chart),
             label: 'レポート',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+          NavigationDestination(
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings),
             label: '設定',
           ),
         ],
@@ -65,9 +77,10 @@ class AppShell extends ConsumerWidget {
   String _titleForTab(int index) {
     return switch (index) {
       0 => 'トレーニング入力',
-      1 => 'カレンダー',
-      2 => 'レポート',
-      3 => '設定',
+      1 => '体組成記録',
+      2 => 'カレンダー',
+      3 => 'レポート',
+      4 => '設定',
       _ => '筋トレ記録',
     };
   }

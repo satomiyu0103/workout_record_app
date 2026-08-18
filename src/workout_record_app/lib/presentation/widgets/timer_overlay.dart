@@ -4,23 +4,28 @@ import 'package:workout_record_app/application/timer/interval_timer_notifier.dar
 import 'package:workout_record_app/core/theme/app_colors.dart';
 
 /// インターバルタイマーをダイアログで表示する（FR-SYS-002）。
-///
-/// ボトムシートだとレイアウト未確定時の hitTest で落ちることがあるため Dialog を使う。
 void showTimerOverlay(BuildContext context) {
   showDialog<void>(
     context: context,
+    useRootNavigator: true,
     barrierDismissible: true,
+    barrierColor: Colors.black54,
     builder: (dialogContext) {
-      return Dialog(
+      return AlertDialog(
         backgroundColor: AppColors.backgroundSecondary,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 280),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: TimerOverlay(
-              onClose: () => Navigator.of(dialogContext).pop(),
-            ),
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.borderSubtle),
+        ),
+        title: const Text(
+          'インターバルタイマー',
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: _TimerOverlayContent(
+            onClose: () => Navigator.of(dialogContext).pop(),
           ),
         ),
       );
@@ -28,8 +33,8 @@ void showTimerOverlay(BuildContext context) {
   );
 }
 
-class TimerOverlay extends ConsumerWidget {
-  const TimerOverlay({super.key, required this.onClose});
+class _TimerOverlayContent extends ConsumerWidget {
+  const _TimerOverlayContent({required this.onClose});
 
   final VoidCallback onClose;
 
@@ -44,11 +49,6 @@ class TimerOverlay extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          'インターバルタイマー',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const SizedBox(height: 24),
         Text(
           timer.isFinished ? '完了' : '${timer.remainingSeconds}',
           style: Theme.of(context).textTheme.displayMedium?.copyWith(

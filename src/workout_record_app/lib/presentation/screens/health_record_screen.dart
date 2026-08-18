@@ -4,10 +4,15 @@ import 'package:intl/intl.dart';
 import 'package:workout_record_app/core/providers/app_providers.dart';
 import 'package:workout_record_app/core/router/app_shell.dart';
 import 'package:workout_record_app/domain/entities/daily_profile.dart';
+import 'package:workout_record_app/presentation/widgets/number_picker_sheet.dart';
+import 'package:workout_record_app/presentation/widgets/value_stepper.dart';
 
 /// 身長・体重・血圧の日次記録画面（FR-REC-004 拡張）。
 class HealthRecordScreen extends ConsumerStatefulWidget {
-  const HealthRecordScreen({super.key});
+  const HealthRecordScreen({super.key, this.embedded = false});
+
+  /// 底部タブ内では AppBar を持たない。
+  final bool embedded;
 
   @override
   ConsumerState<HealthRecordScreen> createState() => _HealthRecordScreenState();
@@ -50,98 +55,206 @@ class _HealthRecordScreenState extends ConsumerState<HealthRecordScreen> {
     final dateKey = formatTrainedOn(_selectedDate);
     final profileAsync = ref.watch(dailyProfileProvider(dateKey));
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('体組成・健康記録')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            OutlinedButton(
-              onPressed: _pickDate,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('記録日'),
-                  Text(DateFormat('yyyy年M月d日').format(_selectedDate)),
-                ],
-              ),
+    final body = SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          OutlinedButton(
+            onPressed: _pickDate,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('記録日'),
+                Text(DateFormat('yyyy年M月d日').format(_selectedDate)),
+              ],
             ),
-            const SizedBox(height: 24),
-            _OptionalNumberStepper(
-              label: '身長 (cm)',
-              display: _heightCm == null
-                  ? '未入力'
-                  : '${_heightCm!.toStringAsFixed(1)} cm',
-              onDecrement: () => setState(() {
-                final current = _heightCm ?? 170;
-                _heightCm = (current - 0.5).clamp(100, 250);
-              }),
-              onIncrement: () => setState(() {
-                final current = _heightCm ?? 170;
-                _heightCm = (current + 0.5).clamp(100, 250);
-              }),
-              onClear: () => setState(() => _heightCm = null),
-            ),
-            const SizedBox(height: 16),
-            _OptionalNumberStepper(
-              label: '体重 (kg)',
-              display: _weightKg == null
-                  ? '未入力'
-                  : '${_weightKg!.toStringAsFixed(1)} kg',
-              onDecrement: () => setState(() {
-                final current = _weightKg ?? 60;
-                _weightKg = (current - 0.1).clamp(20, 300);
-              }),
-              onIncrement: () => setState(() {
-                final current = _weightKg ?? 60;
-                _weightKg = (current + 0.1).clamp(20, 300);
-              }),
-              onClear: () => setState(() => _weightKg = null),
-            ),
-            const SizedBox(height: 16),
-            _OptionalNumberStepper(
-              label: '収縮期血圧 (mmHg)',
-              display: _bpSystolic == null ? '未入力' : '$_bpSystolic mmHg',
-              onDecrement: () => setState(() {
-                final current = _bpSystolic ?? 120;
-                _bpSystolic = (current - 1).clamp(50, 300);
-              }),
-              onIncrement: () => setState(() {
-                final current = _bpSystolic ?? 120;
-                _bpSystolic = (current + 1).clamp(50, 300);
-              }),
-              onClear: () => setState(() => _bpSystolic = null),
-            ),
-            const SizedBox(height: 16),
-            _OptionalNumberStepper(
-              label: '拡張期血圧 (mmHg)',
-              display: _bpDiastolic == null ? '未入力' : '$_bpDiastolic mmHg',
-              onDecrement: () => setState(() {
-                final current = _bpDiastolic ?? 80;
-                _bpDiastolic = (current - 1).clamp(30, 200);
-              }),
-              onIncrement: () => setState(() {
-                final current = _bpDiastolic ?? 80;
-                _bpDiastolic = (current + 1).clamp(30, 200);
-              }),
-              onClear: () => setState(() => _bpDiastolic = null),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: profileAsync.isLoading ? null : _save,
-              child: const Text('保存'),
-            ),
-            const SizedBox(height: 16),
-            profileAsync.when(
-              loading: () => const SizedBox.shrink(),
-              error: (e, _) => Text('読み込みエラー: $e'),
-              data: (profile) => _SavedSummary(profile: profile),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 24),
+          ValueStepper(
+            label: '身長 (cm)',
+            displayValue: _heightCm == null
+                ? '未入力'
+                : '${_heightCm!.toStringAsFixed(1)} cm',
+            largeStepLabel: '5',
+            showClear: true,
+            onClear: () => setState(() => _heightCm = null),
+            onSmallDecrement: () => setState(() {
+              final current = _heightCm ?? 170;
+              _heightCm = (current - 0.5).clamp(100, 250);
+            }),
+            onSmallIncrement: () => setState(() {
+              final current = _heightCm ?? 170;
+              _heightCm = (current + 0.5).clamp(100, 250);
+            }),
+            onLargeDecrement: () => setState(() {
+              final current = _heightCm ?? 170;
+              _heightCm = (current - 5).clamp(100, 250);
+            }),
+            onLargeIncrement: () => setState(() {
+              final current = _heightCm ?? 170;
+              _heightCm = (current + 5).clamp(100, 250);
+            }),
+            onTapValue: () => _pickHeight(context),
+          ),
+          const SizedBox(height: 16),
+          ValueStepper(
+            label: '体重 (kg)',
+            displayValue: _weightKg == null
+                ? '未入力'
+                : '${_weightKg!.toStringAsFixed(1)} kg',
+            largeStepLabel: '5',
+            showClear: true,
+            onClear: () => setState(() => _weightKg = null),
+            onSmallDecrement: () => setState(() {
+              final current = _weightKg ?? 60;
+              _weightKg = (current - 0.1).clamp(20, 300);
+            }),
+            onSmallIncrement: () => setState(() {
+              final current = _weightKg ?? 60;
+              _weightKg = (current + 0.1).clamp(20, 300);
+            }),
+            onLargeDecrement: () => setState(() {
+              final current = _weightKg ?? 60;
+              _weightKg = (current - 5).clamp(20, 300);
+            }),
+            onLargeIncrement: () => setState(() {
+              final current = _weightKg ?? 60;
+              _weightKg = (current + 5).clamp(20, 300);
+            }),
+            onTapValue: () => _pickWeight(context),
+          ),
+          const SizedBox(height: 16),
+          ValueStepper(
+            label: '最高血圧 (mmHg)',
+            displayValue: _bpSystolic == null ? '未入力' : '$_bpSystolic mmHg',
+            largeStepLabel: '5',
+            showClear: true,
+            onClear: () => setState(() => _bpSystolic = null),
+            onSmallDecrement: () => setState(() {
+              final current = _bpSystolic ?? 120;
+              _bpSystolic = (current - 1).clamp(50, 300);
+            }),
+            onSmallIncrement: () => setState(() {
+              final current = _bpSystolic ?? 120;
+              _bpSystolic = (current + 1).clamp(50, 300);
+            }),
+            onLargeDecrement: () => setState(() {
+              final current = _bpSystolic ?? 120;
+              _bpSystolic = (current - 5).clamp(50, 300);
+            }),
+            onLargeIncrement: () => setState(() {
+              final current = _bpSystolic ?? 120;
+              _bpSystolic = (current + 5).clamp(50, 300);
+            }),
+            onTapValue: () => _pickBpSystolic(context),
+          ),
+          const SizedBox(height: 16),
+          ValueStepper(
+            label: '最低血圧 (mmHg)',
+            displayValue: _bpDiastolic == null ? '未入力' : '$_bpDiastolic mmHg',
+            largeStepLabel: '5',
+            showClear: true,
+            onClear: () => setState(() => _bpDiastolic = null),
+            onSmallDecrement: () => setState(() {
+              final current = _bpDiastolic ?? 80;
+              _bpDiastolic = (current - 1).clamp(30, 200);
+            }),
+            onSmallIncrement: () => setState(() {
+              final current = _bpDiastolic ?? 80;
+              _bpDiastolic = (current + 1).clamp(30, 200);
+            }),
+            onLargeDecrement: () => setState(() {
+              final current = _bpDiastolic ?? 80;
+              _bpDiastolic = (current - 5).clamp(30, 200);
+            }),
+            onLargeIncrement: () => setState(() {
+              final current = _bpDiastolic ?? 80;
+              _bpDiastolic = (current + 5).clamp(30, 200);
+            }),
+            onTapValue: () => _pickBpDiastolic(context),
+          ),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: profileAsync.isLoading ? null : _save,
+            child: const Text('保存'),
+          ),
+          const SizedBox(height: 16),
+          profileAsync.when(
+            loading: () => const SizedBox.shrink(),
+            error: (e, _) => Text('読み込みエラー: $e'),
+            data: (profile) => _SavedSummary(profile: profile),
+          ),
+        ],
       ),
     );
+
+    if (widget.embedded) {
+      return body;
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('体組成・健康記録')),
+      body: body,
+    );
+  }
+
+  Future<void> _pickHeight(BuildContext context) async {
+    final picked = await showDecimalPickerSheet(
+      context: context,
+      title: '身長を選択',
+      min: 100,
+      max: 250,
+      step: 0.5,
+      initial: _heightCm ?? 170,
+      unit: 'cm',
+    );
+    if (picked != null && mounted) {
+      setState(() => _heightCm = picked);
+    }
+  }
+
+  Future<void> _pickWeight(BuildContext context) async {
+    final picked = await showDecimalPickerSheet(
+      context: context,
+      title: '体重を選択',
+      min: 20,
+      max: 300,
+      step: 0.1,
+      initial: _weightKg ?? 60,
+      unit: 'kg',
+    );
+    if (picked != null && mounted) {
+      setState(() => _weightKg = picked);
+    }
+  }
+
+  Future<void> _pickBpSystolic(BuildContext context) async {
+    final picked = await showIntPickerSheet(
+      context: context,
+      title: '最高血圧を選択',
+      min: 50,
+      max: 300,
+      initial: _bpSystolic ?? 120,
+      unit: 'mmHg',
+    );
+    if (picked != null && mounted) {
+      setState(() => _bpSystolic = picked);
+    }
+  }
+
+  Future<void> _pickBpDiastolic(BuildContext context) async {
+    final picked = await showIntPickerSheet(
+      context: context,
+      title: '最低血圧を選択',
+      min: 30,
+      max: 200,
+      initial: _bpDiastolic ?? 80,
+      unit: 'mmHg',
+    );
+    if (picked != null && mounted) {
+      setState(() => _bpDiastolic = picked);
+    }
   }
 
   Future<void> _pickDate() async {
@@ -186,66 +299,6 @@ class _HealthRecordScreenState extends ConsumerState<HealthRecordScreen> {
     invalidateDailyProfileProviders(ref, dateKey);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('保存しました')),
-    );
-  }
-}
-
-class _OptionalNumberStepper extends StatelessWidget {
-  const _OptionalNumberStepper({
-    required this.label,
-    required this.display,
-    required this.onDecrement,
-    required this.onIncrement,
-    required this.onClear,
-  });
-
-  final String label;
-  final String display;
-  final VoidCallback onDecrement;
-  final VoidCallback onIncrement;
-  final VoidCallback onClear;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(label, style: Theme.of(context).textTheme.bodyMedium),
-            TextButton(onPressed: onClear, child: const Text('クリア')),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            SizedBox(
-              width: 56,
-              height: 56,
-              child: OutlinedButton(
-                onPressed: onDecrement,
-                child: const Icon(Icons.remove),
-              ),
-            ),
-            Expanded(
-              child: Text(
-                display,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
-            SizedBox(
-              width: 56,
-              height: 56,
-              child: OutlinedButton(
-                onPressed: onIncrement,
-                child: const Icon(Icons.add),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
