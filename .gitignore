@@ -96,3 +96,5 @@ scripts/validate_agent_docs.py
 # その他
 .cache/
 *.bak
+.tools/
+
