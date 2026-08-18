@@ -11,7 +11,7 @@
 | フォルダ | いつ読むか | ファイル |
 |:---|:---|:---|
 | [getting-started/](getting-started/) | 初参加・コードの読み方 | [入門ガイド.md](getting-started/入門ガイド.md) / [コード解説.md](getting-started/コード解説.md) / [d-format/](getting-started/d-format/) |
-| [setup/](setup/) | スタックを選んで環境構築するとき | [python-uv.md](setup/python-uv.md) / [django.md](setup/django.md) / [gas-clasp-pnpm.md](setup/gas-clasp-pnpm.md) / [gas-operations.md](setup/gas-operations.md) / [product-schema-design.md](setup/product-schema-design.md) / [skills-cli.md](setup/skills-cli.md) / [google-drive-mcp.md](setup/google-drive-mcp.md) / [flutter-android.md](setup/flutter-android.md) / [cursor-git-branch-guard.md](setup/cursor-git-branch-guard.md) |
+| [setup/](setup/) | スタックを選んで環境構築するとき | [python-uv.md](setup/python-uv.md) / [django.md](setup/django.md) / [gas-clasp-pnpm.md](setup/gas-clasp-pnpm.md) / [gas-operations.md](setup/gas-operations.md) / [product-schema-design.md](setup/product-schema-design.md) / [skills-cli.md](setup/skills-cli.md) / [google-drive-mcp.md](setup/google-drive-mcp.md) / [flutter-android.md](setup/flutter-android.md) / [android-studio-windows.md](setup/android-studio-windows.md) / [cursor-git-branch-guard.md](setup/cursor-git-branch-guard.md) |
 | [migration/](migration/) | 既存実装の転用・移植 | [meishi-to-product.md](migration/meishi-to-product.md) |
 | [cheatsheets/](cheatsheets/) | 作業中に何度も見る | [git.md](cheatsheets/git.md) / [markdown.md](cheatsheets/markdown.md) / [検証・要件の略語.md](cheatsheets/検証・要件の略語.md) |
 | [learning/](learning/) | テスト・QA など体系的な学習索引 | [ソフトウェアテストとQAの体系.md](learning/ソフトウェアテストとQAの体系.md) |
@@ -37,6 +37,7 @@
 | Markdown の書き方 | [cheatsheets/markdown.md](cheatsheets/markdown.md) |
 | ソフトウェアテスト・QA の体系（学習索引） | [learning/ソフトウェアテストとQAの体系.md](learning/ソフトウェアテストとQAの体系.md) |
 | Flutter で Android 実機に入れて使う | [setup/flutter-android.md](setup/flutter-android.md) |
+| Android Studio・SDK・エミュレータ（Windows） | [setup/android-studio-windows.md](setup/android-studio-windows.md) |
 | Cursor で master 直編集を防ぐ（フック） | [setup/cursor-git-branch-guard.md](setup/cursor-git-branch-guard.md) |
 | 検証・要件の略語（AC / DT / FR / EXR 等） | [cheatsheets/検証・要件の略語.md](cheatsheets/検証・要件の略語.md) |
 

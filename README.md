@@ -20,7 +20,7 @@
 2. [06_ROADMAP.md](doc/specs/06_ROADMAP.md) の 1-1〜1-9 を実装する
 3. 着手時は [AGENTS.md](AGENTS.md) と [08_検証設計.md](doc/specs/08_検証設計.md) の AC を参照する
 4. 組み合わせテストは [08c_検証設計_組み合わせテスト.md](doc/specs/08c_検証設計_組み合わせテスト.md)
-4. 実機へ入れる手順は [flutter-android.md](doc/reference/setup/flutter-android.md) · 検証表は [08b_検証設計_Android配布運用.md](doc/specs/08b_検証設計_Android配布運用.md)
+4. 実機へ入れる手順は [flutter-android.md](doc/reference/setup/flutter-android.md) · Android Studio・エミュレータは [android-studio-windows.md](doc/reference/setup/android-studio-windows.md) · 検証表は [08b_検証設計_Android配布運用.md](doc/specs/08b_検証設計_Android配布運用.md)
 
 ## ドキュメント
 

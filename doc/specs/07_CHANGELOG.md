@@ -11,6 +11,7 @@
 ## [Unreleased]
 
 ### Added
+- `docs` Android Studio・PC 開発環境 — `reference/setup/android-studio-windows.md`（SDK・起動・日本語化・エミュレータ）。`flutter-android.md` にエミュレータ・`flutter test` 節追記。由来: [sessions/2026-08-18_android-studio-pc-dev-setup.md](doc/ai/sessions/2026-08-18_android-studio-pc-dev-setup.md)
 - `chore` Cursor Git ブランチガード — `git_branch_guard` 常時ルール、`preToolUse` / `beforeShellExecution` / stop フック改修。手順: `doc/reference/setup/cursor-git-branch-guard.md`
 - `feat` `FR-REC-004` 体組成・健康記録 — 身長・体重・血圧の日次保存（`daily_profiles` DB v2）。設定→体組成・健康記録画面
 - `feat` `FR-REC-002` 前回記録表示 — 入力画面「当日のセット」下に前回トレ日のセット一覧

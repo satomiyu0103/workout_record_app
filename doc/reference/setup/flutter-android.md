@@ -13,9 +13,9 @@
 ## 全体の流れ（見返し用）
 
 ```text
-【1 回だけ】PC に Flutter + Android SDK を入れる
+【1 回だけ】PC に Flutter + Android SDK を入れる（[android-studio-windows.md](android-studio-windows.md)）
     ↓
-【開発中】USB で繋いで flutter run（動作確認）
+【開発中】エミュレータ or USB 実機で flutter run（動作確認）
     ↓
 【MVP 完成】flutter build apk --release（APK 作成）
     ↓
@@ -26,8 +26,10 @@
 
 | 段階 | 目的 | 主なコマンド / 操作 |
 | --- | --- | --- |
-| 環境構築 | PC で Android 向けにビルドできるようにする | `flutter doctor` |
-| 開発中テスト | コード変更をすぐ実機で確認 | `flutter run` |
+| 環境構築 | PC で Android 向けにビルドできるようにする | `flutter doctor` · [android-studio-windows.md](android-studio-windows.md) |
+| 開発中テスト（PC のみ） | エミュレータで画面を触って確認 | Device Manager 起動 → `flutter run` |
+| 開発中テスト（実機） | コード変更をすぐ実機で確認 | USB → `flutter run` |
+| 自動テスト | ロジック・Widget をコマンドで検証 | `flutter test` |
 | 日常利用用ビルド | ジムで使う完成版を作る | `flutter build apk --release` |
 | インストール | スマホにアプリを入れる | `adb install` または APK タップ |
 | 更新 | バグ修正・機能追加を反映 | 新 APK で上書き |
@@ -45,6 +47,8 @@
 | **USB ケーブル** | 開発中に実機へ直接入れるときに使う |
 
 公式: [Flutter インストール（Windows）](https://docs.flutter.dev/get-started/install/windows)
+
+**Android SDK の入れ方・Android Studio の起動・日本語化** は [android-studio-windows.md](android-studio-windows.md) を参照（初回構築時の見返し用）。
 
 ### 1-2. 動作確認
 
@@ -77,9 +81,31 @@ flutter doctor
 
 ---
 
-## 3. 開発中 — 実機で動かす（`flutter run`）
+## 3. 開発中 — 動かす（`flutter run`）
 
-Phase 1 で `src/workout_record_app/` が作成されたあと、開発中はこの方法で確認します。
+`src/workout_record_app/` で開発中は、**エミュレータ（PC のみ）** または **USB 実機** で確認します。
+
+### 3-A. PC 上で試す（エミュレータ）
+
+スマホを繋がず PC だけで「テストプレイ」する方法です。
+
+1. Android Studio → **Device Manager** で仮想端末を作成（API **26 以上**）し **▶** で起動  
+   詳細: [android-studio-windows.md §5](android-studio-windows.md#5-pc-上でアプリを試すエミュレータ)
+2. 接続確認・実行:
+
+```powershell
+cd src\workout_record_app
+flutter devices
+flutter run
+```
+
+| キー（ターミナル） | 意味 |
+| --- | --- |
+| `r` | ホットリロード |
+| `R` | ホットリスタート |
+| `q` | 終了 |
+
+### 3-B. 実機 USB で動かす
 
 ### 3-1. 接続確認
 
@@ -107,6 +133,15 @@ flutter run
 - タイマーの動作
 
 詳細な期待結果は [08b_検証設計_Android配布運用.md](../../specs/08b_検証設計_Android配布運用.md) の DT-OPS-001 を参照してください。
+
+### 3-C. 自動テスト（画面を触らない）
+
+計算ロジックや Widget の表示をコマンドで一括検証します。
+
+```powershell
+cd src\workout_record_app
+flutter test
+```
 
 ---
 
@@ -192,7 +227,9 @@ DB のスキーマを変えたリリースでは、更新後に記録が残る�
 
 | 用途 | ファイル |
 | --- | --- |
+| Android Studio・SDK・起動・日本語化 | [android-studio-windows.md](android-studio-windows.md) |
 | 配布・運用の DT / 状態遷移 | [08b_検証設計_Android配布運用.md](../../specs/08b_検証設計_Android配布運用.md) |
 | 機能の受け入れ基準 | [08_検証設計.md](../../specs/08_検証設計.md) |
 | 実装フェーズ | [06_ROADMAP.md](../../specs/06_ROADMAP.md) |
 | UI デザイン | [DESIGN.md](../../../DESIGN.md) |
+| 本手順の経緯（チャット知見） | [sessions/2026-08-18_android-studio-pc-dev-setup.md](../../ai/sessions/2026-08-18_android-studio-pc-dev-setup.md) |
