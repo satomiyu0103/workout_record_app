@@ -21,9 +21,10 @@
 - `feat` `FR-HIS-002` カレンダー — 来月以降の閲覧可。未来日は選択不可
 - `feat` `FR-REC-001` `FR-REC-004` 数値入力 UX — 大きい ±（±5/±10）とリールピッカー（タップで選択）を追加
 - `feat` `FR-REC-004` 血圧ラベル — 「最高血圧」「最低血圧」表記に変更
+- `fix` `FR-REC-004` 体組成の日付 — `todayDateOnly()` で未来日を不可（カレンダーと同じ制約）
 
 ### Fixed
-- `fix` `FR-SYS-002` タイマー起動 — 実機で暗転のみになる不具合。`showDialog` をやめ透明 `PageRoute` で中央パネル表示
+- `fix` `FR-SYS-002` タイマー起動 — 実機で暗転のみになる不具合。Navigator を使わず AppShell の Stack オーバーレイで表示
 
 ### Added（Phase 1 MVP 初回）
 - `feat` `FR-EXR-001` `FR-EXR-002` `FR-REC-001` `FR-REC-002` `FR-REC-003` `FR-HIS-001` `FR-HIS-002` `FR-SYS-002` `FR-SYS-003` Phase 1 MVP — `src/workout_record_app/` Flutter + SQLite + Riverpod。層分離・8種目シード・記録CRUD・履歴・カレンダー・タイマー・ダークUI

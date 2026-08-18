@@ -339,11 +339,14 @@ class _DatePickerRow extends ConsumerWidget {
 
     return OutlinedButton(
       onPressed: () async {
+        final today = todayDateOnly();
+        final initial =
+            selectedDate.isAfter(today) ? today : selectedDate;
         final picked = await showDatePicker(
           context: context,
-          initialDate: selectedDate,
+          initialDate: initial,
           firstDate: DateTime(2000),
-          lastDate: DateTime.now(),
+          lastDate: today,
         );
         if (picked != null) {
           ref.read(selectedDateProvider.notifier).state = DateTime(

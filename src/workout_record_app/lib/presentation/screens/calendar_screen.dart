@@ -49,15 +49,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   }
 
   bool _isDaySelectable(DateTime day) {
-    final today = DateTime.now();
     final normalized = DateTime(day.year, day.month, day.day);
-    final todayNormalized = DateTime(today.year, today.month, today.day);
-    return !normalized.isAfter(todayNormalized);
+    return !normalized.isAfter(todayDateOnly());
   }
 
   DateTime get _calendarLastDay {
-    final now = DateTime.now();
-    return DateTime(now.year + 1, 12, 31);
+    final today = todayDateOnly();
+    return DateTime(today.year + 1, 12, 31);
   }
 
   @override

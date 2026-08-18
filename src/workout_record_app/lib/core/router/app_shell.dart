@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:workout_record_app/core/providers/app_providers.dart';
-import 'package:workout_record_app/core/router/app_shell.dart';
 import 'package:workout_record_app/presentation/screens/calendar_screen.dart';
 import 'package:workout_record_app/presentation/screens/health_record_screen.dart';
 import 'package:workout_record_app/presentation/screens/input_screen.dart';
@@ -17,60 +16,73 @@ class AppShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tabIndex = ref.watch(selectedTabIndexProvider);
+    final timerVisible = ref.watch(timerOverlayVisibleProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_titleForTab(tabIndex)),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.timer_outlined),
-            tooltip: 'インターバルタイマー',
-            onPressed: () => showTimerOverlay(context),
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Text(_titleForTab(tabIndex)),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.timer_outlined),
+                tooltip: 'インターバルタイマー',
+                onPressed: () {
+                  ref.read(timerOverlayVisibleProvider.notifier).state = true;
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-      body: IndexedStack(
-        index: tabIndex,
-        children: const [
-          InputScreen(),
-          HealthRecordScreen(embedded: true),
-          CalendarScreen(),
-          ReportScreen(),
-          SettingsScreen(),
-        ],
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: tabIndex,
-        onDestinationSelected: (index) =>
-            ref.read(selectedTabIndexProvider.notifier).state = index,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.fitness_center_outlined),
-            selectedIcon: Icon(Icons.fitness_center),
-            label: '入力',
+          body: IndexedStack(
+            index: tabIndex,
+            children: const [
+              InputScreen(),
+              HealthRecordScreen(embedded: true),
+              CalendarScreen(),
+              ReportScreen(),
+              SettingsScreen(),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.monitor_weight_outlined),
-            selectedIcon: Icon(Icons.monitor_weight),
-            label: '体組成',
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: tabIndex,
+            onDestinationSelected: (index) =>
+                ref.read(selectedTabIndexProvider.notifier).state = index,
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.fitness_center_outlined),
+                selectedIcon: Icon(Icons.fitness_center),
+                label: '入力',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.monitor_weight_outlined),
+                selectedIcon: Icon(Icons.monitor_weight),
+                label: '体組成',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.calendar_month_outlined),
+                selectedIcon: Icon(Icons.calendar_month),
+                label: 'カレンダー',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.bar_chart_outlined),
+                selectedIcon: Icon(Icons.bar_chart),
+                label: 'レポート',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.settings_outlined),
+                selectedIcon: Icon(Icons.settings),
+                label: '設定',
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_month_outlined),
-            selectedIcon: Icon(Icons.calendar_month),
-            label: 'カレンダー',
+        ),
+        if (timerVisible)
+          TimerOverlayLayer(
+            onClose: () {
+              ref.read(timerOverlayVisibleProvider.notifier).state = false;
+            },
           ),
-          NavigationDestination(
-            icon: Icon(Icons.bar_chart_outlined),
-            selectedIcon: Icon(Icons.bar_chart),
-            label: 'レポート',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: '設定',
-          ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -84,6 +96,12 @@ class AppShell extends ConsumerWidget {
       _ => '筋トレ記録',
     };
   }
+}
+
+/// 時刻を除いた「今日」（カレンダー・日付ピッカー共通）。
+DateTime todayDateOnly() {
+  final now = DateTime.now();
+  return DateTime(now.year, now.month, now.day);
 }
 
 String formatTrainedOn(DateTime date) {

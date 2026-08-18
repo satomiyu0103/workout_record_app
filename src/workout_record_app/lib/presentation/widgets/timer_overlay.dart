@@ -3,82 +3,66 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workout_record_app/application/timer/interval_timer_notifier.dart';
 import 'package:workout_record_app/core/theme/app_colors.dart';
 
-/// インターバルタイマーをオーバーレイ表示する（FR-SYS-002）。
+/// AppShell の [Stack] 上に載せるタイマー UI（FR-SYS-002）。
 ///
-/// `showDialog` / `AlertDialog` は実機で暗転のみになることがあるため、
-/// 透明な [PageRoute] で中央パネルを載せる。
-void showTimerOverlay(BuildContext context) {
-  Navigator.of(context).push<void>(
-    PageRouteBuilder<void>(
-      opaque: false,
-      barrierDismissible: true,
-      barrierColor: Colors.black54,
-      transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return _TimerOverlayPage(
-          onClose: () => Navigator.of(context).pop(),
-        );
-      },
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(opacity: animation, child: child);
-      },
-    ),
-  );
-}
-
-class _TimerOverlayPage extends StatelessWidget {
-  const _TimerOverlayPage({required this.onClose});
+/// Navigator / showDialog は実機で暗転のみになることがあるため、
+/// ルート遷移は使わず同一ツリー内のオーバーレイで表示する。
+class TimerOverlayLayer extends ConsumerWidget {
+  const TimerOverlayLayer({super.key, required this.onClose});
 
   final VoidCallback onClose;
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: onClose,
-              behavior: HitTestBehavior.opaque,
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Positioned.fill(
+      child: Material(
+        type: MaterialType.transparency,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: onClose,
+                behavior: HitTestBehavior.opaque,
+                child: const ColoredBox(color: Color(0x8A000000)),
+              ),
             ),
-          ),
-          Center(
-            child: GestureDetector(
-              onTap: () {},
-              child: Material(
-                color: AppColors.backgroundSecondary,
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  side: const BorderSide(color: AppColors.borderSubtle),
-                ),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    minWidth: 280,
-                    maxWidth: 400,
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Material(
+                  color: AppColors.backgroundSecondary,
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: const BorderSide(color: AppColors.borderSubtle),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          'インターバルタイマー',
-                          style: Theme.of(context).textTheme.titleLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 24),
-                        _TimerOverlayContent(onClose: onClose),
-                      ],
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minWidth: 280,
+                      maxWidth: 400,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'インターバルタイマー',
+                            style: Theme.of(context).textTheme.titleLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 24),
+                          _TimerOverlayContent(onClose: onClose),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
