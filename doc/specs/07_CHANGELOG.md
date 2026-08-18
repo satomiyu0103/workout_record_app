@@ -23,10 +23,11 @@
 - `feat` `FR-REC-004` 血圧ラベル — 「最高血圧」「最低血圧」表記に変更
 - `fix` `FR-REC-004` 体組成の日付 — `todayDateOnly()` で未来日を不可（カレンダーと同じ制約）
 
-### Fixed
-- `fix` `FR-SYS-002` タイマー起動 — 実機で暗転のみになる不具合。Navigator を使わず AppShell の Stack オーバーレイで表示
+### Known（実機 FB・別ブランチ）
 
-### Added（Phase 1 MVP 初回）
+- `FR-SYS-002` タイマー — 実機でオーバーレイ暗転のみ（Dialog / PageRoute / Stack 試行後も未解決）。タブ化は別ブランチで計画。詳細: [sessions/2026-08-18_FR-REC-004-post-mvp-ux.md](doc/ai/sessions/2026-08-18_FR-REC-004-post-mvp-ux.md)
+
+### Fixed
 - `feat` `FR-EXR-001` `FR-EXR-002` `FR-REC-001` `FR-REC-002` `FR-REC-003` `FR-HIS-001` `FR-HIS-002` `FR-SYS-002` `FR-SYS-003` Phase 1 MVP — `src/workout_record_app/` Flutter + SQLite + Riverpod。層分離・8種目シード・記録CRUD・履歴・カレンダー・タイマー・ダークUI
 - `test` MVP 単体テスト — バリデーション・DAO・タイマー状態・レポート Widget（16件）
 
