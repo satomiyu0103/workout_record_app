@@ -23,7 +23,7 @@
 - `feat` `FR-REC-004` 血圧ラベル — 「最高血圧」「最低血圧」表記に変更
 
 ### Fixed
-- `fix` `FR-SYS-002` タイマー起動 — AlertDialog + useRootNavigator で暗転のみになる不具合を修正
+- `fix` `FR-SYS-002` タイマー起動 — 実機で暗転のみになる不具合。`showDialog` をやめ透明 `PageRoute` で中央パネル表示
 
 ### Added（Phase 1 MVP 初回）
 - `feat` `FR-EXR-001` `FR-EXR-002` `FR-REC-001` `FR-REC-002` `FR-REC-003` `FR-HIS-001` `FR-HIS-002` `FR-SYS-002` `FR-SYS-003` Phase 1 MVP — `src/workout_record_app/` Flutter + SQLite + Riverpod。層分離・8種目シード・記録CRUD・履歴・カレンダー・タイマー・ダークUI
